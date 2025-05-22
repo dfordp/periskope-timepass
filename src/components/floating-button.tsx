@@ -1,5 +1,5 @@
-import { FiMessageCircle } from "react-icons/fi";
 import { Button } from "./ui/button";
+import { LuMessageCirclePlus } from "react-icons/lu";
 
 export function FloatingButton() {
   return (
@@ -7,7 +7,7 @@ export function FloatingButton() {
       <Button
         className="h-14 w-14 rounded-full bg-green-600 hover:bg-green-700 shadow-lg"
       >
-        <FiMessageCircle className="h-6 w-6 text-white" />
+        <LuMessageCirclePlus className="h-6 w-6 text-white" />
       </Button>
     </div>
   );
