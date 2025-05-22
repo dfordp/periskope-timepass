@@ -1,18 +1,22 @@
 import React from "react";
 import { Button } from "./ui/button";
 import { ScrollArea } from "./ui/scroll-area";
-import { ChatItem } from "./chat-item";
 import { mockChats } from "@/lib/mockdata";
-import { Input } from "./ui/input";
 import { bottomNavItems, navItems } from "@/lib/constants";
 import { 
-  FiFilter, 
-  FiSearch 
-} from "react-icons/fi";
+  HiMagnifyingGlass,
+  HiArrowsPointingOut,
+  HiClipboard,
+  HiArrowDownTray,
+  HiArrowUpTray,
+  HiTrash,
+  HiEllipsisHorizontal
+} from "react-icons/hi2";
 import { FloatingButton } from "./floating-button";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { IoFilterSharp } from "react-icons/io5";
 import { RiFileDownloadFill } from "react-icons/ri";
+import { FiSearch } from "react-icons/fi";
 
 
 export const NavigationSidebar = () => {
@@ -76,18 +80,14 @@ export const ChatSidebar = () => {
             <RiFileDownloadFill />
               Custom Filter
             </Button>
-            <Button
-            variant="ghost"
-            size="sm"
-            className="bg-gray-100 shadow-2xl shadow-gray-200 outline-black outline-8 text-zinc-600 hover:bg-zinc-50 h-8 px-3 font-semibold"
-          >
-            Save
+          <Button className="flex items-center gap-1 px-2 py-1.5 border border-zinc-200 bg-white rounded-md shadow-sm cursor-pointer"> 
+            <span className="text-zinc-400">Save</span>
           </Button>
           </div>
           <div className="flex justify-center gap-2 ">
-            <Button className="bg-gray-100 text-gray-500 flex items-center gap-2 hover:bg-zinc-50 font-semibold"> 
+            <Button className="flex items-center gap-1 px-2 py-1.5 border border-zinc-200 bg-white rounded-md shadow-sm cursor-pointer"> 
             <FiSearch className="h-4 w-4 text-zinc-400" /> 
-            <span>Search</span>
+            <span className="text-zinc-400">Search</span>
             </Button>
             <div className="flex items-center justify-between">
             <Button
@@ -161,6 +161,67 @@ export const ChatSidebar = () => {
       {/* Floating Action Button */}
       <div className="absolute bottom-1 right-1">
         <FloatingButton />
+      </div>
+    </div>
+  );
+};
+
+
+export const RightNavigationSidebar = () => {
+  return (
+    <div className="w-10 border-l border-zinc-200 bg-white flex flex-col items-center py-4">
+      <div className="flex-1 space-y-2">
+        <Button
+          variant="ghost"
+          size="icon"
+          className="w-10 h-10 rounded-xl text-zinc-400 hover:bg-zinc-50"
+        >
+          <HiMagnifyingGlass className="h-4 w-4" />
+        </Button>
+        <Button
+          variant="ghost"
+          size="icon"
+          className="w-10 h-10 rounded-xl text-zinc-400 hover:bg-zinc-50"
+        >
+          <HiArrowsPointingOut className="h-4 w-4" />
+        </Button>
+        <Button
+          variant="ghost"
+          size="icon"
+          className="w-10 h-10 rounded-xl text-zinc-400 hover:bg-zinc-50"
+        >
+          <HiClipboard className="h-4 w-4" />
+        </Button>
+      </div>
+      <div className="space-y-2">
+        <Button
+          variant="ghost"
+          size="icon"
+          className="w-10 h-10 rounded-xl text-zinc-400 hover:bg-zinc-50"
+        >
+          <HiArrowDownTray className="h-4 w-4" />
+        </Button>
+        <Button
+          variant="ghost"
+          size="icon"
+          className="w-10 h-10 rounded-xl text-zinc-400 hover:bg-zinc-50"
+        >
+          <HiArrowUpTray className="h-4 w-4" />
+        </Button>
+        <Button
+          variant="ghost"
+          size="icon"
+          className="w-10 h-10 rounded-xl text-zinc-400 hover:bg-zinc-50"
+        >
+          <HiTrash className="h-4 w-4" />
+        </Button>
+        <Button
+          variant="ghost"
+          size="icon"
+          className="w-10 h-10 rounded-xl text-zinc-400 hover:bg-zinc-50"
+        >
+          <HiEllipsisHorizontal className="h-4 w-4" />
+        </Button>
       </div>
     </div>
   );

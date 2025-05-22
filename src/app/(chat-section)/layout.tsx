@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Geist } from "next/font/google";
 import "../globals.css";
-import { ChatSidebar, NavigationSidebar } from "@/components/sidebar";
+import { ChatSidebar, NavigationSidebar, RightNavigationSidebar } from "@/components/sidebar";
 import { TopBar } from "@/components/top-bar";
 
 const geist = Geist({
@@ -30,6 +30,7 @@ export default function RootLayout({
               <main className="flex-1 relative bg-slate-50">
                 {children}
               </main>
+              <RightNavigationSidebar />
             </div>
           </div>
         </div>
