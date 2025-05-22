@@ -1,3 +1,5 @@
+"use client"
+
 import React from "react";
 import { Button } from "./ui/button";
 import { ScrollArea } from "./ui/scroll-area";
@@ -17,6 +19,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { IoFilterSharp } from "react-icons/io5";
 import { RiFileDownloadFill } from "react-icons/ri";
 import { FiSearch } from "react-icons/fi";
+import { useRouter } from "next/navigation";
 
 
 export const NavigationSidebar = () => {
@@ -66,6 +69,11 @@ export const NavigationSidebar = () => {
 };
 
 export const ChatSidebar = () => {
+  const router = useRouter();
+
+  const handleChatClick = (chatId: number) => {
+    router.push(`/chat/${chatId}`);
+  };
   return (
     <div className="w-[600px] border-r bg-white flex flex-col relative">
       {/* Header with combined search and filters */}
@@ -81,7 +89,7 @@ export const ChatSidebar = () => {
               Custom Filter
             </Button>
           <Button className="flex items-center gap-1 px-2 py-1.5 border border-zinc-200 bg-white rounded-md shadow-sm cursor-pointer"> 
-            <span className="text-zinc-400">Save</span>
+            <span className="text-zinc-400">Search</span>
           </Button>
           </div>
           <div className="flex justify-center gap-2 ">
@@ -113,6 +121,8 @@ export const ChatSidebar = () => {
             <div
               key={chat.id}
               className="flex items-center gap-3 p-3 hover:bg-zinc-50 cursor-pointer"
+              onClick={() => handleChatClick(chat.id)}
+
             >
               <Avatar className="h-12 w-12 shrink-0">
                 <AvatarImage src={chat.avatar} alt={chat.name} />

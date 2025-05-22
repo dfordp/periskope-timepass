@@ -8,6 +8,8 @@ export interface User {
 export interface Chat {
   id: number;
   name: string;
+  message : string,
+  phone : string,
   lastMessage: {
     text: string;
     time: string;
