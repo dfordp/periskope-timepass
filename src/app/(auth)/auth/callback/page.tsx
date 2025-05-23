@@ -43,7 +43,7 @@ export default function AuthCallbackPage() {
               sameSite: 'strict'
             })
             
-            Cookies.set('user_id', user.id, {
+            Cookies.set('email', user.email ?? '' , {
               secure: true,
               sameSite: 'strict'
             })

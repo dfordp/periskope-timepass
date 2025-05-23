@@ -45,7 +45,7 @@ export default function SignInPage() {
             <div className="space-y-2">
               <h1 className="text-xl font-semibold text-zinc-900">Check your email</h1>
               <p className="text-sm text-zinc-500">
-                We've sent a sign in link to<br />
+                We have sent a sign in link to<br />
                 <span className="font-medium text-zinc-700">{identifier}</span>
               </p>
             </div>
@@ -64,7 +64,7 @@ export default function SignInPage() {
               className="w-full h-11"
               onClick={() => window.location.reload()}
             >
-              Didn't receive the email?
+              Did not receive the email?
             </Button>
 
             <p className="text-sm text-zinc-500">
@@ -121,7 +121,7 @@ export default function SignInPage() {
 
         {/* Footer Link */}
         <div className="text-center text-sm text-zinc-500">
-          Don't have an account?{" "}
+          Do not have an account?{" "}
           <a href="/sign-up" className="text-green-600 hover:text-green-700">
             Sign up
           </a>

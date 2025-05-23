@@ -1,4 +1,3 @@
-import { Button } from "@/components/ui/button";
 import { HiOutlineChatBubbleLeftRight } from "react-icons/hi2";
 
 export default function ChatPage() {
@@ -13,12 +12,6 @@ export default function ChatPage() {
           Select a conversation from the list to start chatting or create a new one
         </p>
       </div>
-      <Button 
-        variant="outline" 
-        className="mt-4 text-zinc-600 border-zinc-200"
-      >
-        Start new chat
-      </Button>
     </div>
   );
 }

@@ -13,7 +13,7 @@ export const mockChats: Chat[] = [
       status: "sent"
     },
     avatar: "/avatars/test-el-centro.png",
-    labels: ["Demo"],
+    tags: ["Demo"],
     date: "Yesterday",
     unreadCount: 0,
     pinned: false,
@@ -31,7 +31,7 @@ export const mockChats: Chat[] = [
       status: "delivered"
     },
     avatar: "/avatars/test-skope.png",
-    labels: ["Demo"],
+    tags: ["Demo"],
     unreadCount: 2,
     pinned: true,
     participants: []
@@ -48,7 +48,7 @@ export const mockChats: Chat[] = [
       status: "read"
     },
     avatar: "/avatars/team-chat.png",
-    labels: ["Demo", "Internal"],
+    tags: ["Demo", "Internal"],
     unreadCount: 1,
     pinned: false,
     participants: ["Team"]
@@ -65,7 +65,7 @@ export const mockChats: Chat[] = [
       status: "read"
     },
     avatar: "/avatars/default.png",
-    labels: ["Demo", "Signup"],
+    tags: ["Demo", "Signup"],
     unreadCount: 0,
     pinned: false,
     participants: []
@@ -82,7 +82,7 @@ export const mockChats: Chat[] = [
       status: "sent"
     },
     avatar: "/avatars/demo17.png",
-    labels: ["Content", "Demo"],
+    tags: ["Content", "Demo"],
     unreadCount: 0,
     pinned: false,
     participants: []
@@ -99,7 +99,7 @@ export const mockChats: Chat[] = [
       status: "sent"
     },
     avatar: "/avatars/yasin.png",
-    labels: ["Demo", "Dont Send"],
+    tags: ["Demo", "Dont Send"],
     unreadCount: 0,
     pinned: false,
     participants: []
@@ -116,7 +116,7 @@ export const mockChats: Chat[] = [
       status: "sent"
     },
     avatar: "/avatars/test-skope-final.png",
-    labels: ["Demo"],
+    tags: ["Demo"],
     unreadCount: 1,
     pinned: false,
     participants: []
@@ -133,7 +133,7 @@ export const mockChats: Chat[] = [
       status: "sent"
     },
     avatar: "/avatars/skope-demo.png",
-    labels: ["Demo"],
+    tags: ["Demo"],
     unreadCount: 0,
     pinned: false,
     participants: []

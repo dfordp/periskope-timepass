@@ -5,22 +5,24 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import { FiMic, FiPaperclip, FiSmile, FiCheck, FiClock, FiRefreshCw, FiStar, FiChevronRight, FiChevronDown } from "react-icons/fi";
+import { FiMic, FiPaperclip, FiSmile, FiCheck, FiClock, FiRefreshCw, FiStar } from "react-icons/fi";
 import { FaCheckDouble } from "react-icons/fa";
 import { HiArrowsPointingOut, HiEllipsisVertical } from "react-icons/hi2";
 import { Input } from "@/components/ui/input";
 import { useEffect, useState } from "react";
 import { Chat, Message } from "@/types";
 import { IoMdSend } from "react-icons/io";
+import { useParams } from "next/navigation";
 
-export default function ChatPage({ params }: { params: { id: string } }) {
+export default function ChatPage() {
+  const params = useParams()
   const [chat, setChat] = useState<Chat | undefined>();
   const [messages, setMessages] = useState<Message[]>([]);
   const [activeTab, setActiveTab] = useState<'whatsapp' | 'private'>('whatsapp');
 
-  useEffect(() => {
+   useEffect(() => {
     const currentChat = mockChats.find((c) => c.id === Number(params.id));
-    const currentMessages = mockMessages[params.id] || [];
+    const currentMessages = mockMessages[params.id as string] || [];
     setChat(currentChat);
     setMessages(currentMessages);
   }, [params.id]);

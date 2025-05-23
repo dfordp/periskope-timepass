@@ -18,7 +18,7 @@ export interface Chat {
     phone?: string;
   };
   avatar?: string;
-  labels: string[];
+  tags: string[];
   unreadCount: number;
   pinned: boolean;
   participants: Array<{ name: string; phone?: string; } | string>;

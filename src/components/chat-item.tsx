@@ -18,7 +18,7 @@ export function ChatItem({ chat }: { chat: Chat }) {
       <div className="flex-1 min-w-0">
         <div className="flex items-center justify-between">
           <h4 className="text-sm font-medium text-zinc-900 truncate">{chat.name}</h4>
-          <span className="text-xs text-zinc-500">{chat.time}</span>
+          <span className="text-xs text-zinc-500">{chat.date}</span>
         </div>
         <p className="text-xs text-zinc-500 truncate">{chat.message}</p>
         <div className="flex items-center gap-2 mt-0.5">

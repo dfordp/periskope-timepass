@@ -139,7 +139,7 @@ export const ChatSidebar = () => {
                   <span className="text-sm text-zinc-500 truncate">
                     {chat.lastMessage.text}
                   </span>
-                  {chat.labels.map((label, idx) => {
+                  {chat.tags.map((label, idx) => {
                     const labelColor = {
                       Demo: "text-rose-500 bg-rose-50 border-rose-100",
                       Internal: "text-emerald-500 bg-emerald-50 border-emerald-100",

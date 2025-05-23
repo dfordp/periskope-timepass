@@ -3,7 +3,6 @@
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { useState } from "react"
-import { useRouter } from "next/navigation"
 import { FiMail, FiPhone, FiUser, FiCamera, FiCheckCircle } from "react-icons/fi"
 import Image from "next/image"
 import { supabase } from "@/app/helpers/supabase"
@@ -18,7 +17,6 @@ export default function SignUpPage() {
   const [avatar, setAvatar] = useState<File | null>(null)
   const [avatarPreview, setAvatarPreview] = useState<string>("")
   const [isLoading, setIsLoading] = useState(false)
-  const router = useRouter()
 
   const handleAvatarChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
@@ -43,7 +41,7 @@ export default function SignUpPage() {
 
     try {
       // Handle base signup
-      const { data: user, error: signUpError } = await supabase.auth.signUp({
+      const { error: signUpError } = await supabase.auth.signUp({
         email: formData.email,
         password: "696969",
       })
@@ -99,7 +97,7 @@ export default function SignUpPage() {
             <div className="space-y-2">
               <h1 className="text-xl font-semibold text-zinc-900">Check your email</h1>
               <p className="text-sm text-zinc-500">
-                We've sent a verification link to<br />
+                We have sent a verification link to<br />
                 <span className="font-medium text-zinc-700">{formData.email}</span>
               </p>
             </div>
@@ -118,7 +116,7 @@ export default function SignUpPage() {
               className="w-full h-11"
               onClick={() => window.location.reload()}
             >
-              Didn't receive the email?
+              Did not receive the email?
             </Button>
 
             <p className="text-sm text-zinc-500">
