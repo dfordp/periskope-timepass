@@ -18,6 +18,10 @@ export async function middleware(req : NextRequest ) {
     return NextResponse.redirect(new URL('/sign-in', req.url))
   }
 
+  if ((email && req.nextUrl.pathname == '/sign-in') || (email && req.nextUrl.pathname == '/sign-up')) {
+    return NextResponse.redirect(new URL('/chat', req.url))
+  }
+
   return res
 }
 
