@@ -1,9 +1,8 @@
 "use client"
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Button } from "./ui/button";
 import { ScrollArea } from "./ui/scroll-area";
-import { mockChats } from "@/lib/mockdata";
 import { bottomNavItems, navItems } from "@/lib/constants";
 import { 
   HiMagnifyingGlass,
@@ -20,6 +19,9 @@ import { IoFilterSharp } from "react-icons/io5";
 import { RiFileDownloadFill } from "react-icons/ri";
 import { FiSearch } from "react-icons/fi";
 import { useRouter } from "next/navigation";
+import Cookies from 'js-cookie'
+import { Chat } from "@/types";
+import { supabase } from "@/app/helpers/supabase";
 
 
 export const NavigationSidebar = () => {
@@ -69,13 +71,66 @@ export const NavigationSidebar = () => {
 };
 
 export const ChatSidebar = () => {
-  const router = useRouter();
+  const router = useRouter()
+  const [chats, setChats] = useState<Chat[]>([])
+  const [isLoading, setIsLoading] = useState(true)
 
-  const handleChatClick = (chatId: number) => {
-    router.push(`/chat/${chatId}`);
-  };
+  useEffect(() => {
+    const fetchChats = async () => {
+      const email = Cookies.get('email')
+      if (!email) return
+
+      try {
+        const { data: userData } = await supabase
+          .from('User')
+          .select('id')
+          .eq('email', email)
+          .single()
+
+        if (!userData) return
+
+        const { data, error } = await supabase
+          .from('chat')
+          .select('*')
+          .contains('participants', [ userData.id ])
+          .order('created_at', { ascending: false })
+
+        if (error) throw error
+
+
+        const transformedChats = data.map(chat => ({
+          ...chat,
+          date: chat.created_at,
+          lastMessage: chat.lastMessage || {
+            text: 'No messages yet',
+            time: chat.created_at,
+            sender: 'system',
+            status: 'delivered'
+          }
+        }))
+
+        setChats(transformedChats)
+      } catch (error) {
+        console.error('Error fetching chats:', error)
+      } finally {
+        setIsLoading(false)
+      }
+    }
+
+    fetchChats()
+  }, [])
+
+
+  if (isLoading) {
+    return (
+      <div className="w-[600px] border-r bg-white flex items-center justify-center">
+        <div className="h-12 w-12 border-4 border-green-600 border-t-transparent rounded-full animate-spin" />
+      </div>
+    )
+  }
+
   return (
-    <div className="w-[600px] border-r bg-white flex flex-col relative">
+     <div className="w-[600px] border-r bg-white flex flex-col relative">
       {/* Header with combined search and filters */}
       <div className="p-3 border-b space-y-3 bg-white sticky top-0 z-20">
         <div className="flex justify-between gap-2">
@@ -114,67 +169,55 @@ export const ChatSidebar = () => {
         </div>
 
 
-      {/* Chat List */}
       <ScrollArea className="flex-1">
         <div className="divide-y divide-zinc-100">
-          {mockChats.map((chat) => (
-            <div
-              key={chat.id}
-              className="flex items-center gap-3 p-3 hover:bg-zinc-50 cursor-pointer"
-              onClick={() => handleChatClick(chat.id)}
-
-            >
-              <Avatar className="h-12 w-12 shrink-0">
-                <AvatarImage src={chat.avatar} alt={chat.name} />
-                <AvatarFallback className="bg-zinc-100 text-zinc-500">
-                  {chat.name.charAt(0)}
-                </AvatarFallback>
-              </Avatar>
-              <div className="flex-1 min-w-0">
-                <div className="flex items-center justify-between">
-                  <span className="font-medium text-zinc-900 truncate">{chat.name}</span>
-                  <span className="text-xs text-zinc-500">{chat.lastMessage.time}</span>
-                </div>
-                <div className="flex items-center justify-between  gap-0.5 mt-0.5">
-                  <span className="text-sm text-zinc-500 truncate">
-                    {chat.lastMessage.text}
-                  </span>
-                  {chat.tags.map((label, idx) => {
-                    const labelColor = {
-                      Demo: "text-rose-500 bg-rose-50 border-rose-100",
-                      Internal: "text-emerald-500 bg-emerald-50 border-emerald-100",
-                      Signup: "text-blue-500 bg-blue-50 border-blue-100",
-                      Content: "text-amber-500 bg-amber-50 border-amber-100",
-                      "Dont Send": "text-red-500 bg-red-50 border-red-100"
-                    }[label] || "text-zinc-500 bg-zinc-50 border-zinc-100";
-                    return (
-                      <span
-                        key={idx}
-                        className={`text-[15px] px-1.5 py-0.5 rounded border ${labelColor} font-medium`}
-                      >
-                        {label}
+          {(
+            chats.map((chat) => (
+              <div
+                key={chat.id}
+                className="flex items-center gap-3 p-3 hover:bg-zinc-50 cursor-pointer"
+                onClick={() => router.push(`/chat/${chat.id}`)}
+              >
+                <Avatar className="h-12 w-12 shrink-0">
+                  <AvatarFallback className="bg-zinc-100 text-zinc-500">
+                    {chat.name.charAt(0) ? chat.name.charAt(0) : "P"}
+                  </AvatarFallback>
+                </Avatar>
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <span className="font-medium text-zinc-900 truncate">
+                        {chat.name ? chat.name : "Participant"}
                       </span>
-                    );
-                  })}
-                  {chat.unreadCount > 0 && (
-                    <span className="ml-2 flex h-5 w-5 items-center justify-center rounded-full bg-green-600 text-xs text-white">
-                      {chat.unreadCount}
+                    </div>
+                    <span className="text-xs text-zinc-500">
+                      {new Date(chat.lastMessage?.time || chat.date!).toLocaleTimeString([], {
+                        hour: '2-digit',
+                        minute: '2-digit'
+                      })}
                     </span>
-                  )}
+                  </div>
+                  <div className="flex items-center justify-between gap-0.5 mt-0.5">
+                    <span className="text-sm text-zinc-500 truncate">
+                      {chat.lastMessage?.text ? chat.lastMessage?.text : "Just Created" }
+                    </span>
+                    <span className="text-xs text-zinc-400">
+                      {chat.lastMessage?.status}
+                    </span>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            ))
+          )}
         </div>
       </ScrollArea>
 
-      {/* Floating Action Button */}
       <div className="absolute bottom-1 right-1">
         <FloatingButton />
       </div>
     </div>
-  );
-};
+  )
+}
 
 
 export const RightNavigationSidebar = () => {

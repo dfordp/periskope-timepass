@@ -8,19 +8,15 @@ export interface User {
 export interface Chat {
   id: number;
   name: string;
-  phone : string,
-  lastMessage: {
+  lastMessage?: {
     text: string;
     time: string;
     sender: string;
     status: 'sent' | 'delivered' | 'read';
     phone?: string;
   };
-  avatar?: string;
-  tags: string[];
-  unreadCount: number;
-  pinned: boolean;
-  participants: Array<{ name: string; phone?: string; } | string>;
+  isGroup: boolean;
+  participants: string[];
   date ?: string;
 }
 export interface Message {

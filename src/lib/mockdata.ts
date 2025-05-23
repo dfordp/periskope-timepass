@@ -4,144 +4,100 @@ export const mockChats: Chat[] = [
   {
     id: 1,
     name: "Test El Centro",
-    message: "CVFER",
-    phone: "+91 99778 44008",
     lastMessage: {
       text: "CDERT",
       time: "11:51",
       sender: "Roshnag Airtel",
       status: "sent"
     },
-    avatar: "/avatars/test-el-centro.png",
-    tags: ["Demo"],
-    date: "Yesterday",
-    unreadCount: 0,
-    pinned: false,
-    participants: ["Roshnag Airtel", "Roshnag Jio", "Bharat Kumar Ramesh", "Periskope"]
+    isGroup: true,
+    participants: []
   },
   {
     id: 2,
     name: "Test Skope Final 5",
-    message: "Support2: This doesn't go on Tuesday...",
-    phone: "+91 99778 44008",
     lastMessage: {
       text: "Support2: This doesn't go on Tuesday...",
       time: "Yesterday",
       sender: "Support2",
       status: "delivered"
     },
-    avatar: "/avatars/test-skope.png",
-    tags: ["Demo"],
-    unreadCount: 2,
-    pinned: true,
+    isGroup: false,
     participants: []
   },
   {
     id: 3,
     name: "Periskope Team Chat",
-    message: "Periskope: Test message",
-    phone: "+91 99778 44008",
     lastMessage: {
       text: "Periskope: Test message",
       time: "28-Feb-25",
       sender: "Periskope",
       status: "read"
     },
-    avatar: "/avatars/team-chat.png",
-    tags: ["Demo", "Internal"],
-    unreadCount: 1,
-    pinned: false,
-    participants: ["Team"]
+    isGroup: true,
+    participants: []
   },
   {
     id: 4,
     name: "+91 99999 99999",
-    message: "Hi there, I'm Swapnika, Co-Founder of ...",
-    phone: "+91 99999 99999",
     lastMessage: {
       text: "Hi there, I'm Swapnika, Co-Founder of ...",
       time: "25-Feb-25",
       sender: "User",
       status: "read"
     },
-    avatar: "/avatars/default.png",
-    tags: ["Demo", "Signup"],
-    unreadCount: 0,
-    pinned: false,
+    isGroup: false,
     participants: []
   },
   {
     id: 5,
     name: "Test Demo17",
-    message: "Rohnsen: 123",
-    phone: "+91 99778 44008",
     lastMessage: {
       text: "Hello, South Euna!",
       time: "25-Feb-25",
       sender: "Roshnag Airtel",
       status: "sent"
     },
-    avatar: "/avatars/demo17.png",
-    tags: ["Content", "Demo"],
-    unreadCount: 0,
-    pinned: false,
+    isGroup: false,
     participants: []
   },
   {
     id: 6,
     name: "Yasin 3",
-    message: "First Bulk Message",
-    phone: "+91 99778 44008",
     lastMessage: {
-      text: "CDERT",
+      text: "First Bulk Message",
       time: "25-Nov-24",
       sender: "Roshnag Airtel",
       status: "sent"
     },
-    avatar: "/avatars/yasin.png",
-    tags: ["Demo", "Dont Send"],
-    unreadCount: 0,
-    pinned: false,
+    isGroup: false,
     participants: []
   },
   {
     id: 7,
     name: "Test Skope Final 9473",
-    message: "Heyy",
-    phone: "+91 99778 44008",
     lastMessage: {
       text: "testing",
       time: "01-Jan-25",
       sender: "Periskope",
       status: "sent"
     },
-    avatar: "/avatars/test-skope-final.png",
-    tags: ["Demo"],
-    unreadCount: 1,
-    pinned: false,
+    isGroup: false,
     participants: []
   },
   {
     id: 8,
     name: "Skope Demo",
-    message: "test 123",
-    phone: "+91 99778 44008",
     lastMessage: {
       text: "test 123",
       time: "20-Dec-24",
       sender: "User",
       status: "sent"
     },
-    avatar: "/avatars/skope-demo.png",
-    tags: ["Demo"],
-    unreadCount: 0,
-    pinned: false,
+    isGroup: false,
     participants: []
   }
 ];
-
-
-// ...existing chat mockdata...
 
 export const mockMessages: Record<string, Message[]> = {
   "1": [

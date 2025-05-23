@@ -15,17 +15,18 @@ import { IoMdSend } from "react-icons/io";
 import { useParams } from "next/navigation";
 
 export default function ChatPage() {
-  const params = useParams()
+  const {id} = useParams()
   const [chat, setChat] = useState<Chat | undefined>();
   const [messages, setMessages] = useState<Message[]>([]);
   const [activeTab, setActiveTab] = useState<'whatsapp' | 'private'>('whatsapp');
 
-   useEffect(() => {
-    const currentChat = mockChats.find((c) => c.id === Number(params.id));
-    const currentMessages = mockMessages[params.id as string] || [];
+  useEffect(() => {
+    const numericId = Number(id);
+    const currentChat = mockChats.find((c) => c.id === numericId);
+    const currentMessages = mockMessages[numericId] || [];
     setChat(currentChat);
     setMessages(currentMessages);
-  }, [params.id]);
+  }, [id]);
 
   if (!chat) return null;
 
@@ -35,18 +36,13 @@ export default function ChatPage() {
       <header className="shrink-0 h-14 border-b border-zinc-200 px-4 flex items-center justify-between bg-white">
         <div className="flex items-center gap-3">
           <Avatar className="h-9 w-9">
-            <AvatarImage src={chat.avatar} alt={chat.name} />
+            <AvatarImage alt={chat.name} />
             <AvatarFallback className="bg-zinc-100 text-zinc-500">
               {chat.name.charAt(0)}
             </AvatarFallback>
           </Avatar>
           <div className="flex flex-col">
             <h2 className="text-[13px] font-semibold text-zinc-900 leading-none">{chat.name}</h2>
-            <div className="flex items-center gap-1 text-[12px] text-zinc-500">
-              {chat.participants.map((p) =>
-                typeof p === "string" ? p : p.name
-              ).join(", ")}
-            </div>
           </div>
         </div>
         <div className="flex items-center gap-2">
