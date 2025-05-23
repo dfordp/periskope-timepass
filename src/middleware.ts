@@ -8,7 +8,7 @@ export async function middleware(req : NextRequest ) {
 
 
   // Auth routes that don't require session
-  if (req.nextUrl.pathname.startsWith('/auth')) {
+  if (req.nextUrl.pathname.startsWith('/auth') || req.nextUrl.pathname.startsWith('/sign-up')) {
     return res;
   }
 

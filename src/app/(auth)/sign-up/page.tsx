@@ -2,33 +2,73 @@
 
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { useState } from "react"
-import { FiMail, FiPhone, FiUser, FiCamera, FiCheckCircle } from "react-icons/fi"
-import Image from "next/image"
+import { useState, useEffect } from "react"
+import { useRouter } from "next/navigation"
+import { FiMail, FiPhone, FiUser, FiCheckCircle } from "react-icons/fi"
 import { supabase } from "@/app/helpers/supabase"
 
 export default function SignUpPage() {
-  const [step, setStep] = useState<'details' | 'confirmation'>('details')
+  const router = useRouter()
+  const [step, setStep] = useState<'details' | 'confirmation' | 'verifying'>('details')
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     phone: "",
   })
-  const [avatar, setAvatar] = useState<File | null>(null)
-  const [avatarPreview, setAvatarPreview] = useState<string>("")
   const [isLoading, setIsLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
 
-  const handleAvatarChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0]
-    if (file) {
-      setAvatar(file)
-      const reader = new FileReader()
-      reader.onloadend = () => {
-        setAvatarPreview(reader.result as string)
+  useEffect(() => {
+    const handleAuthCallback = async () => {
+      const hash = window.location.hash.substring(1)
+      
+      if (!hash) return
+      
+      setStep('verifying')
+      setError(null)
+      
+      const params = new URLSearchParams(hash)
+      const accessToken = params.get('access_token')
+      const refreshToken = params.get('refresh_token')
+      const type = params.get('type')
+      
+      if (type === 'signup' && accessToken) {
+        try {
+          const { data: { user }, error: userError } = await supabase.auth.getUser(accessToken)
+          
+          if (userError) throw userError
+          
+          if (user) {
+            // Update user verification status
+            const { error: updateError } = await supabase
+              .from('User')
+              .update({ isVerified: true })
+              .eq('email', user.email)
+            
+            if (updateError) throw updateError
+
+            // Set session
+            if (refreshToken) {
+              await supabase.auth.setSession({
+                access_token: accessToken,
+                refresh_token: refreshToken
+              })
+            }
+            
+            // Clear hash and redirect
+            window.location.hash = ''
+            router.push('/chat')
+          }
+        } catch (error) {
+          console.error('Verification error:', error)
+          setError('Failed to verify your account. Please try again.')
+          setStep('details')
+        }
       }
-      reader.readAsDataURL(file)
     }
-  }
+
+    handleAuthCallback()
+  }, [router])
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
@@ -38,31 +78,19 @@ export default function SignUpPage() {
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault()
     setIsLoading(true)
+    setError(null)
 
     try {
       // Handle base signup
       const { error: signUpError } = await supabase.auth.signUp({
         email: formData.email,
-        password: "696969",
+        password: crypto.randomUUID(), // Generate random password
+        options: {
+          emailRedirectTo: `${window.location.origin}/sign-up`
+        }
       })
 
       if (signUpError) throw signUpError
-
-      // Handle avatar upload
-      let avatarUrl = ""
-      if (avatar) {
-        const filePath = `avatars/${Date.now()}-${avatar.name}`
-        const { error: storageError } = await supabase.storage
-          .from('avatars')
-          .upload(filePath, avatar)
-
-        if (!storageError) {
-          const { data: storedData } = supabase.storage
-            .from('avatars')
-            .getPublicUrl(filePath)
-          avatarUrl = storedData.publicUrl
-        }
-      }
 
       // Create user record
       const { error: userError } = await supabase
@@ -72,7 +100,6 @@ export default function SignUpPage() {
           email: formData.email,
           phone: formData.phone,
           isVerified: false,
-          avatar: avatarUrl
         }])
 
       if (userError) throw userError
@@ -80,10 +107,22 @@ export default function SignUpPage() {
       // Show confirmation screen
       setStep('confirmation')
     } catch (error) {
-      console.error(error)
+      console.error('Signup error:', error)
+      setError('Failed to create your account. Please try again.')
     } finally {
       setIsLoading(false)
     }
+  }
+
+  if (step === 'verifying') {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-zinc-50">
+        <div className="text-center space-y-4">
+          <div className="h-12 w-12 border-4 border-green-600 border-t-transparent rounded-full animate-spin mx-auto" />
+          <p className="text-sm text-zinc-500">Verifying your account...</p>
+        </div>
+      </div>
+    )
   }
 
   if (step === 'confirmation') {
@@ -146,34 +185,13 @@ export default function SignUpPage() {
           <p className="text-sm text-zinc-500">Enter your details to get started</p>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-4">
-          {/* Avatar Upload */}
-          <div className="flex justify-center">
-            <div className="relative">
-              <div className="h-20 w-20 rounded-full bg-zinc-100 border-2 border-zinc-200 flex items-center justify-center overflow-hidden">
-                {avatarPreview ? (
-                  <Image
-                    src={avatarPreview}
-                    alt="Avatar preview"
-                    fill
-                    className="object-cover"
-                  />
-                ) : (
-                  <FiUser className="h-8 w-8 text-zinc-400" />
-                )}
-              </div>
-              <label className="absolute bottom-0 right-0 h-6 w-6 bg-green-600 rounded-full flex items-center justify-center cursor-pointer">
-                <FiCamera className="h-3 w-3 text-white" />
-                <input
-                  type="file"
-                  className="hidden"
-                  accept="image/*"
-                  onChange={handleAvatarChange}
-                />
-              </label>
-            </div>
+        {error && (
+          <div className="bg-red-50 border border-red-100 rounded-lg p-3">
+            <p className="text-sm text-red-600">{error}</p>
           </div>
+        )}
 
+        <form onSubmit={handleSubmit} className="space-y-4">
           {/* Form Fields */}
           <div className="space-y-4">
             {/* Name Input */}
